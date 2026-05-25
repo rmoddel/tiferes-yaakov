@@ -1,4 +1,4 @@
-import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
+import { FormEvent, SyntheticEvent, useEffect, useRef, useState } from "react";
 
 const donationAmounts = ["$36", "$72", "$180", "$360", "$500", "$1000"];
 const logoSrc = "/congregation-tiferes-yaakov-logo.svg";
@@ -53,7 +53,6 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDonation, setActiveDonation] = useState("$180");
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set(["hero-content"]));
-  const [animatedStats, setAnimatedStats] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const onScroll = () => {
@@ -88,42 +87,6 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const frameIds: number[] = [];
-
-    nourishStats.forEach((stat) => {
-      if (!visibleIds.has("nourish-grid") || animatedStats[stat.id] === stat.value) {
-        return;
-      }
-
-      const start = performance.now();
-      const duration = 1200;
-
-      const tick = (now: number) => {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const nextValue = Math.round(stat.value * eased);
-
-        setAnimatedStats((current) => {
-          if ((current[stat.id] ?? 0) >= nextValue) {
-            return current;
-          }
-          return { ...current, [stat.id]: nextValue };
-        });
-
-        if (progress < 1) {
-          frameIds.push(requestAnimationFrame(tick));
-        }
-      };
-
-      frameIds.push(requestAnimationFrame(tick));
-    });
-
-    return () => {
-      frameIds.forEach((id) => cancelAnimationFrame(id));
-    };
-  }, [animatedStats, visibleIds]);
-
   const closeMenu = () => setIsMenuOpen(false);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -137,11 +100,6 @@ function App() {
   const handleLogoError = (event: SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.onerror = null;
     event.currentTarget.src = fallbackLogoSrc;
-  };
-
-  const formatAnimatedValue = (id: string, prefix = "", suffix = "") => {
-    const raw = animatedStats[id] ?? 0;
-    return `${prefix}${raw.toLocaleString()}${suffix}`;
   };
 
   return (
@@ -278,7 +236,14 @@ function App() {
         <div className={`nourish-stats ${fadeClassName("nourish-grid")}`} data-fade-id="nourish-grid">
           {nourishStats.map((stat) => (
             <article key={stat.id} className="nourish-stat">
-              <strong>{formatAnimatedValue(stat.id, stat.prefix, stat.suffix)}</strong>
+              <strong>
+                <AnimatedCounter
+                  value={stat.value}
+                  prefix={stat.prefix}
+                  suffix={stat.suffix}
+                  start={visibleIds.has("nourish-grid")}
+                />
+              </strong>
               <span>{stat.label}</span>
             </article>
           ))}
@@ -537,6 +502,60 @@ function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function AnimatedCounter({
+  value,
+  prefix = "",
+  suffix = "",
+  start,
+}: {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  start: boolean;
+}) {
+  const [displayValue, setDisplayValue] = useState(0);
+  const hasStartedRef = useRef(false);
+
+  useEffect(() => {
+    if (!start || hasStartedRef.current) {
+      return;
+    }
+
+    hasStartedRef.current = true;
+    let frameId = 0;
+    let lastRendered = -1;
+    const startTime = performance.now();
+    const duration = 2200;
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      const nextValue = Math.round(value * eased);
+
+      if (nextValue !== lastRendered) {
+        lastRendered = nextValue;
+        setDisplayValue(nextValue);
+      }
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(tick);
+      }
+    };
+
+    frameId = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(frameId);
+  }, [start, value]);
+
+  return (
+    <>
+      {prefix}
+      {displayValue.toLocaleString()}
+      {suffix}
+    </>
   );
 }
 
