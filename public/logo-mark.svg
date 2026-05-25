@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Congregation Tiferes Yaakov</title>
+  <desc id="desc">Fallback circular emblem with Hebrew-inspired monogram styling.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1b2e" />
+      <stop offset="100%" stop-color="#06111f" />
+    </linearGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0d990" />
+      <stop offset="100%" stop-color="#b98c2c" />
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="120" fill="url(#bg)" />
+  <circle cx="128" cy="128" r="114" fill="none" stroke="url(#ring)" stroke-width="6" />
+  <circle cx="128" cy="128" r="88" fill="none" stroke="rgba(232,211,155,0.55)" stroke-width="2" />
+  <path
+    d="M85 88h28v74c0 9 3 15 14 15 7 0 13-3 18-8l12 17c-10 11-23 17-40 17-27 0-42-15-42-43V88Zm60 0h28v66h-28V88Z"
+    fill="url(#ring)"
+  />
+  <text
+    x="128"
+    y="62"
+    text-anchor="middle"
+    font-family="Georgia, serif"
+    font-size="20"
+    fill="#e8d39b"
+    letter-spacing="5"
+  >
+    CTY
+  </text>
+</svg>
