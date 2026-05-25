@@ -23,6 +23,121 @@ const leverageStats = [
     body: "Cost per family — generating $766K in retail food value monthly",
   },
 ] as const;
+const partnerOrganizations = [
+  {
+    fadeId: "partner-1",
+    category: "Food Essentials",
+    badge: "$1 = $6 of food essentials",
+    name: "Aniyei Kiryat Sefer",
+    lead: "Led by Yoely Zupnik",
+    description:
+      "Providing food essentials to families in Kiryat Sefer, the highest concentration of Torah scholars in Eretz Yisroel. Every dollar is multiplied 6x through strategic partnerships and bulk purchasing.",
+    stats: [
+      { value: "6,000+", label: "Families Served" },
+      { value: "6x", label: "Your Impact" },
+    ],
+  },
+  {
+    fadeId: "partner-2",
+    category: "Protein & Nutrition",
+    badge: "$1 = $2.40 of food value",
+    name: "Lihasbia Chicken Project",
+    lead: "Led by Sruly Katz",
+    description:
+      "Nourishing kollel families with protein-rich meals. Two chickens per child monthly ensures proper nutrition for children who would otherwise eat pareve all week.",
+    stats: [
+      { value: "3,300+", label: "Kollel Families" },
+      { value: "27,000+", label: "People Fed" },
+      { value: "190+", label: "Kollelim" },
+      { value: "$9M+", label: "Yearly Value" },
+    ],
+  },
+  {
+    fadeId: "partner-3",
+    category: "Clothing & Dignity",
+    badge: "$5M creates $40M of value",
+    name: "Malbushei Kavod",
+    lead: "Dressed with Dignity • Led by Moshe Bodner",
+    description:
+      "Ensuring every family is dressed in beautiful clothing for Yom Tov. Through strategic purchasing, $5M in donations creates $40M of value for Klal Yisroel.",
+    stats: [
+      { value: "31,000+", label: "Families Served" },
+      { value: "160,000+", label: "Children Clothed" },
+      { value: "900,000+", label: "Clothing Items" },
+      { value: "1,100+", label: "Neighborhoods" },
+    ],
+  },
+  {
+    fadeId: "partner-4",
+    category: "Torah Support",
+    badge: "",
+    name: "Keren Olam HaTorah",
+    lead: "Led by Community Leadership",
+    description:
+      "Supporting Torah scholars and their families throughout Eretz Yisroel, ensuring that those dedicated to learning can continue their sacred work without financial burden.",
+    stats: [
+      { value: "5,000+", label: "Families Supported" },
+      { value: "100%", label: "To Torah Families" },
+    ],
+  },
+  {
+    fadeId: "partner-5",
+    category: "Basic Needs",
+    badge: "",
+    name: "Kupas Bet Shemesh",
+    lead: "Led by Nachum Cheshin",
+    description:
+      "Providing weekly assistance to hundreds of impoverished families in Bet Shemesh with basic necessities, food, utilities, medical expenses, and emergency support when needed most.",
+    stats: [
+      { value: "500+", label: "Families Weekly" },
+      { value: "$10M+", label: "Yearly Aid" },
+    ],
+  },
+] as const;
+const impactStats = [
+  {
+    fadeId: "impact-1",
+    title: "Food Essentials",
+    description: "Aniyei Kiryat Sefer multiplies every donated dollar into large-scale essentials through bulk purchasing.",
+    value: "6,000+",
+    label: "Families Served",
+  },
+  {
+    fadeId: "impact-2",
+    title: "Food Multiplication",
+    description: "Strategic partnerships turn basic giving into materially larger food support on the ground.",
+    value: "6x",
+    label: "Your Impact",
+  },
+  {
+    fadeId: "impact-3",
+    title: "Protein & Nutrition",
+    description: "The chicken project supports kollel homes with real nourishment rather than a week of pareve meals.",
+    value: "27,000+",
+    label: "People Fed",
+  },
+  {
+    fadeId: "impact-4",
+    title: "Clothing & Dignity",
+    description: "Malbushei Kavod equips families for Yom Tov with dignified, beautiful clothing at scale.",
+    value: "160,000+",
+    label: "Children Clothed",
+  },
+  {
+    fadeId: "impact-5",
+    title: "Torah Support",
+    description: "Keren Olam HaTorah keeps Torah families supported so learning can continue without crushing strain.",
+    value: "5,000+",
+    label: "Families Supported",
+  },
+  {
+    fadeId: "impact-6",
+    title: "Basic Needs",
+    description: "Kupas Bet Shemesh provides weekly relief and year-round emergency aid where the need is immediate.",
+    value: "$10M+",
+    label: "Yearly Aid",
+  },
+] as const;
 
 const fadeUpTargets = [
   "hero-content",
@@ -38,11 +153,14 @@ const fadeUpTargets = [
   "partner-2",
   "partner-3",
   "partner-4",
+  "partner-5",
   "impact-head",
   "impact-1",
   "impact-2",
   "impact-3",
   "impact-4",
+  "impact-5",
+  "impact-6",
   "donate-box",
   "contact-head",
   "contact-form",
@@ -144,7 +262,7 @@ function App() {
           <a href="#contact" onClick={closeMenu}>
             Contact
           </a>
-          <a href="#donate" className="btn filled" onClick={closeMenu}>
+          <a href="/donate" className="btn filled" onClick={closeMenu}>
             Donate Now
           </a>
         </div>
@@ -165,7 +283,7 @@ function App() {
             — directly to families facing hardship.
           </p>
           <div className="hero-actions">
-            <a href="#donate" className="btn filled">
+            <a href="/donate" className="btn filled">
               Make a Donation
             </a>
             <a href="#partners" className="btn">
@@ -225,11 +343,11 @@ function App() {
 
       <section className="nourish" id="nourish">
         <div className={`section-head center ${fadeClassName("nourish-head")}`} data-fade-id="nourish-head">
-          <div className="eyebrow">Focused Initiative</div>
-          <h2>Nourishing Tomorrow&apos;s Leaders</h2>
+          <div className="eyebrow">Protein &amp; Nutrition</div>
+          <h2>Lihasbia Chicken Project</h2>
           <p>
-            In Kiryat Sefer, many families of Torah scholars face a profound challenge: while they have basic food,
-            they lack true nourishment. An estimated 80% of families in our target income bracket are pareve all week.
+            Nourishing kollel families with protein-rich meals. Two chickens per child monthly ensures proper
+            nutrition for children who would otherwise eat pareve all week.
           </p>
         </div>
 
@@ -242,6 +360,7 @@ function App() {
                   prefix={stat.prefix}
                   suffix={stat.suffix}
                   start={visibleIds.has("nourish-grid")}
+                  duration={2400}
                 />
               </strong>
               <span>{stat.label}</span>
@@ -274,63 +393,32 @@ function App() {
         </div>
 
         <div className="partner-list">
-          <article className={`partner-card ${fadeClassName("partner-1")}`} data-fade-id="partner-1">
-            <div className="partner-top">
-              <div className="partner-num">01</div>
-              <div className="partner-category">Food &amp; Basic Needs</div>
-            </div>
-            <h3>Aniyei Kiryat Sefer</h3>
-            <div className="partner-lead">Led by Yoely Zupnik</div>
-            <p>
-              Providing essential support to families in Kiryat Sefer, ensuring no one goes without basic necessities.
-            </p>
-            <a href="#" className="learn-more">
-              Learn More
-            </a>
-          </article>
-
-          <article className={`partner-card ${fadeClassName("partner-2")}`} data-fade-id="partner-2">
-            <div className="partner-top">
-              <div className="partner-num">02</div>
-              <div className="partner-category">Hunger Relief</div>
-            </div>
-            <h3>Lehasbia</h3>
-            <div className="partner-lead">Led by Sruly Katz</div>
-            <p>Dedicated to feeding hungry families with dignity, delivering meals and groceries to those in need.</p>
-            <a href="#" className="learn-more">
-              Learn More
-            </a>
-          </article>
-
-          <article className={`partner-card ${fadeClassName("partner-3")}`} data-fade-id="partner-3">
-            <div className="partner-top">
-              <div className="partner-num">03</div>
-              <div className="partner-category">Clothing &amp; Dignity</div>
-            </div>
-            <h3>Dressed with Dignity</h3>
-            <div className="partner-lead">Community Led</div>
-            <p>
-              Ensuring every person has access to clean, quality clothing — because dignity starts with how we dress.
-            </p>
-            <a href="#" className="learn-more">
-              Learn More
-            </a>
-          </article>
-
-          <article className={`partner-card ${fadeClassName("partner-4")}`} data-fade-id="partner-4">
-            <div className="partner-top">
-              <div className="partner-num">04</div>
-              <div className="partner-category">Various Causes</div>
-            </div>
-            <h3>Additional Partners</h3>
-            <div className="partner-lead">Various Leaders</div>
-            <p>
-              We continue to expand our network of trusted charitable organizations to maximize our collective impact.
-            </p>
-            <a href="#" className="learn-more">
-              Learn More
-            </a>
-          </article>
+          {partnerOrganizations.map((partner) => (
+            <article
+              key={partner.fadeId}
+              className={`partner-card ${fadeClassName(partner.fadeId)}`}
+              data-fade-id={partner.fadeId}
+            >
+              <div className="partner-top">
+                <div className="partner-category">{partner.category}</div>
+                {partner.badge ? <div className="partner-badge">{partner.badge}</div> : null}
+              </div>
+              <h3>{partner.name}</h3>
+              <div className="partner-lead">{partner.lead}</div>
+              <p>{partner.description}</p>
+              <div className={`partner-stats partner-stats-${partner.stats.length}`}>
+                {partner.stats.map((stat) => (
+                  <div key={`${partner.fadeId}-${stat.label}`} className="partner-stat-box">
+                    <strong>{stat.value}</strong>
+                    <span>{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+              <a href="/donate" className="learn-more">
+                Support This Work
+              </a>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -341,34 +429,18 @@ function App() {
         >
           <div className="eyebrow">Our Impact</div>
           <h2>Every Contribution Creates Change</h2>
-          <p>Your donations are transformed into tangible support for families facing hardship.</p>
+          <p>Your donations are transformed into measurable support for Torah families across Eretz Yisroel.</p>
         </div>
 
         <div className="impact-grid">
-          <div className={`impact-card ${fadeClassName("impact-1")}`} data-fade-id="impact-1">
-            <h3>Food Security</h3>
-            <p>Weekly food packages and hot meals delivered to families who would otherwise go hungry.</p>
-            <strong>500+</strong>
-            <span>Meals Monthly</span>
-          </div>
-          <div className={`impact-card ${fadeClassName("impact-2")}`} data-fade-id="impact-2">
-            <h3>Clothing &amp; Dignity</h3>
-            <p>Quality clothing for adults and children, restoring dignity and confidence.</p>
-            <strong>200+</strong>
-            <span>Families Clothed</span>
-          </div>
-          <div className={`impact-card ${fadeClassName("impact-3")}`} data-fade-id="impact-3">
-            <h3>Essential Support</h3>
-            <p>Rent assistance, utility bills, and emergency funds for families in crisis.</p>
-            <strong>$50K+</strong>
-            <span>In Support</span>
-          </div>
-          <div className={`impact-card ${fadeClassName("impact-4")}`} data-fade-id="impact-4">
-            <h3>Community Care</h3>
-            <p>Holiday assistance, school supplies, and celebration support for special occasions.</p>
-            <strong>Year</strong>
-            <span>Round Support</span>
-          </div>
+          {impactStats.map((item) => (
+            <div key={item.fadeId} className={`impact-card ${fadeClassName(item.fadeId)}`} data-fade-id={item.fadeId}>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <strong>{item.value}</strong>
+              <span>{item.label}</span>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -418,10 +490,10 @@ function App() {
 
           <p>Your one-time gift</p>
           <div className="donate-actions">
-            <a href="#" className="btn filled">
+            <a href="/donate" className="btn filled">
               Donate with Card
             </a>
-            <a href="#" className="btn secondary-action">
+            <a href="/donate" className="btn secondary-action">
               PayPal Giving
             </a>
           </div>
@@ -487,12 +559,12 @@ function App() {
             <a href="#mission">Our Mission</a>
             <a href="#partners">Partners</a>
             <a href="#impact">Impact</a>
-            <a href="#donate">Donate</a>
+            <a href="/donate">Donate</a>
           </div>
           <div>
             <h4>Support</h4>
-            <a href="#donate">Donate via Card</a>
-            <a href="#donate">PayPal Giving</a>
+            <a href="/donate">Donate via Card</a>
+            <a href="/donate">PayPal Giving</a>
             <a href="#contact">Contact Us</a>
           </div>
         </div>
@@ -510,11 +582,13 @@ function AnimatedCounter({
   prefix = "",
   suffix = "",
   start,
+  duration = 2200,
 }: {
   value: number;
   prefix?: string;
   suffix?: string;
   start: boolean;
+  duration?: number;
 }) {
   const [displayValue, setDisplayValue] = useState(0);
   const hasStartedRef = useRef(false);
@@ -528,12 +602,11 @@ function AnimatedCounter({
     let frameId = 0;
     let lastRendered = -1;
     const startTime = performance.now();
-    const duration = 2200;
 
     const tick = (now: number) => {
       const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4);
-      const nextValue = Math.round(value * eased);
+      const eased = 0.5 - Math.cos(progress * Math.PI) / 2;
+      const nextValue = Math.floor(value * eased);
 
       if (nextValue !== lastRendered) {
         lastRendered = nextValue;
@@ -548,7 +621,7 @@ function AnimatedCounter({
     frameId = requestAnimationFrame(tick);
 
     return () => cancelAnimationFrame(frameId);
-  }, [start, value]);
+  }, [duration, start, value]);
 
   return (
     <>
