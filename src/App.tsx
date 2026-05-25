@@ -1,13 +1,38 @@
 import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
 
 const donationAmounts = ["$36", "$72", "$180", "$360", "$500", "$1000"];
-const logoSrc = "/image(13).png";
+const logoSrc = "/congregation-tiferes-yaakov-logo.svg";
 const fallbackLogoSrc = "/logo-mark.svg";
+const nourishStats = [
+  { id: "3317", value: 3317, prefix: "", suffix: "", label: "Kollel Families" },
+  { id: "27020", value: 27020, prefix: "", suffix: "", label: "People Fed" },
+  { id: "190", value: 190, prefix: "", suffix: "+", label: "Kollelim" },
+  { id: "9200000", value: 9200000, prefix: "$", suffix: "", label: "Yearly Food Value" },
+];
+const leverageStats = [
+  {
+    title: "$1 = $2.40",
+    body: "Your dollar becomes $2.40 of food value through bulk purchasing power",
+  },
+  {
+    title: "2 Chickens",
+    body: "Per unmarried child, per month — ensuring protein-rich meals 4x weekly",
+  },
+  {
+    title: "$96/mo",
+    body: "Cost per family — generating $766K in retail food value monthly",
+  },
+] as const;
 
 const fadeUpTargets = [
   "hero-content",
   "mission-head",
   "mission-quote",
+  "nourish-head",
+  "nourish-grid",
+  "nourish-detail-1",
+  "nourish-detail-2",
+  "nourish-detail-3",
   "partners-head",
   "partner-1",
   "partner-2",
@@ -28,6 +53,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDonation, setActiveDonation] = useState("$180");
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set(["hero-content"]));
+  const [animatedStats, setAnimatedStats] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const onScroll = () => {
@@ -62,6 +88,42 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const frameIds: number[] = [];
+
+    nourishStats.forEach((stat) => {
+      if (!visibleIds.has("nourish-grid") || animatedStats[stat.id] === stat.value) {
+        return;
+      }
+
+      const start = performance.now();
+      const duration = 1200;
+
+      const tick = (now: number) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const nextValue = Math.round(stat.value * eased);
+
+        setAnimatedStats((current) => {
+          if ((current[stat.id] ?? 0) >= nextValue) {
+            return current;
+          }
+          return { ...current, [stat.id]: nextValue };
+        });
+
+        if (progress < 1) {
+          frameIds.push(requestAnimationFrame(tick));
+        }
+      };
+
+      frameIds.push(requestAnimationFrame(tick));
+    });
+
+    return () => {
+      frameIds.forEach((id) => cancelAnimationFrame(id));
+    };
+  }, [animatedStats, visibleIds]);
+
   const closeMenu = () => setIsMenuOpen(false);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -75,6 +137,11 @@ function App() {
   const handleLogoError = (event: SyntheticEvent<HTMLImageElement>) => {
     event.currentTarget.onerror = null;
     event.currentTarget.src = fallbackLogoSrc;
+  };
+
+  const formatAnimatedValue = (id: string, prefix = "", suffix = "") => {
+    const raw = animatedStats[id] ?? 0;
+    return `${prefix}${raw.toLocaleString()}${suffix}`;
   };
 
   return (
@@ -195,6 +262,39 @@ function App() {
             <div className="hebrew">עולם חסד יבנה</div>
             <p>“The beauty of giving is found not in what we give, but in the lives we touch.”</p>
           </div>
+        </div>
+      </section>
+
+      <section className="nourish" id="nourish">
+        <div className={`section-head center ${fadeClassName("nourish-head")}`} data-fade-id="nourish-head">
+          <div className="eyebrow">Focused Initiative</div>
+          <h2>Nourishing Tomorrow&apos;s Leaders</h2>
+          <p>
+            In Kiryat Sefer, many families of Torah scholars face a profound challenge: while they have basic food,
+            they lack true nourishment. An estimated 80% of families in our target income bracket are pareve all week.
+          </p>
+        </div>
+
+        <div className={`nourish-stats ${fadeClassName("nourish-grid")}`} data-fade-id="nourish-grid">
+          {nourishStats.map((stat) => (
+            <article key={stat.id} className="nourish-stat">
+              <strong>{formatAnimatedValue(stat.id, stat.prefix, stat.suffix)}</strong>
+              <span>{stat.label}</span>
+            </article>
+          ))}
+        </div>
+
+        <div className="nourish-details">
+          {leverageStats.map((item, index) => (
+            <article
+              key={item.title}
+              className={`nourish-detail ${fadeClassName(`nourish-detail-${index + 1}` as (typeof fadeUpTargets)[number])}`}
+              data-fade-id={`nourish-detail-${index + 1}`}
+            >
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </article>
+          ))}
         </div>
       </section>
 
