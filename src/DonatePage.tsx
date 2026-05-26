@@ -43,7 +43,7 @@ function DonatePage() {
                   Use one of the congregation’s external giving pages to make an online contribution.
                 </p>
                 <div className="donate-action-list">
-                  <a href="https://thedonorsfund.org/" className="btn filled" target="_blank" rel="noreferrer">
+                  <a href="https://thedonorsfund.org/donate/congregation-tiferes-yaakov/834411630" className="btn filled" target="_blank" rel="noreferrer">
                     via The Donors Fund
                   </a>
                   <a

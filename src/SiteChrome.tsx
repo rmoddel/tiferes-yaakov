@@ -102,7 +102,7 @@ export function SiteFooter() {
           <a href="https://www.paypal.com/us/fundraiser/charity/3817152" target="_blank" rel="noreferrer">
             PayPal Giving
           </a>
-          <a href="https://thedonorsfund.org/" target="_blank" rel="noreferrer">
+          <a href="https://thedonorsfund.org/donate/congregation-tiferes-yaakov/834411630" target="_blank" rel="noreferrer">
             Donors Fund
           </a>
           <a href="/#contact">Contact Us</a>
