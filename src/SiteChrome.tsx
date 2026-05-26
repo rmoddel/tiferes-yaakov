@@ -62,7 +62,7 @@ export function SiteHeader({ sectionLinks = [] }: SiteHeaderProps) {
             {link.label}
           </a>
         ))}
-        <a href="/donate" className="btn filled" onClick={closeMenu}>
+        <a href="/donate/" className="btn filled" onClick={closeMenu}>
           Donate
         </a>
       </div>
@@ -95,7 +95,7 @@ export function SiteFooter() {
           <h4>Quick Links</h4>
           <a href="/#mission">Our Mission</a>
           <a href="/#partners">Partners</a>
-          <a href="/donate">Donate</a>
+          <a href="/donate/">Donate</a>
         </div>
         <div>
           <h4>Support</h4>

@@ -217,7 +217,7 @@ function App() {
             organization helping families in need, strengthening charitable impact, and furthering Jewish education.
           </p>
           <div className="hero-actions">
-            <a href="/donate" className="btn filled">
+            <a href="/donate/" className="btn filled">
               Make a Donation
             </a>
             <a href="#partners" className="btn">
@@ -306,7 +306,7 @@ function App() {
                   </div>
                 ))}
               </div>
-              <a href="/donate" className="learn-more">
+              <a href="/donate/" className="learn-more">
                 Support This Work
               </a>
             </article>
@@ -339,7 +339,7 @@ function App() {
           </div>
 
           <div className="donate-actions">
-            <a href="/donate" className="btn filled">
+            <a href="/donate/" className="btn filled">
               Donate
             </a>
           </div>
