@@ -1,28 +1,8 @@
-import { FormEvent, SyntheticEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
 
 const donationAmounts = ["$36", "$72", "$180", "$360", "$500", "$1000"];
 const logoSrc = "/congregation-tiferes-yaakov-logo.svg";
 const fallbackLogoSrc = "/logo-mark.svg";
-const nourishStats = [
-  { id: "3317", value: 3317, prefix: "", suffix: "", label: "Kollel Families" },
-  { id: "27020", value: 27020, prefix: "", suffix: "", label: "People Fed" },
-  { id: "190", value: 190, prefix: "", suffix: "+", label: "Kollelim" },
-  { id: "9200000", value: 9200000, prefix: "$", suffix: "", label: "Yearly Food Value" },
-];
-const leverageStats = [
-  {
-    title: "$1 = $2.40",
-    body: "Your dollar becomes $2.40 of food value through bulk purchasing power",
-  },
-  {
-    title: "2 Chickens",
-    body: "Per unmarried child, per month — ensuring protein-rich meals 4x weekly",
-  },
-  {
-    title: "$96/mo",
-    body: "Cost per family — generating $766K in retail food value monthly",
-  },
-] as const;
 const partnerOrganizations = [
   {
     fadeId: "partner-1",
@@ -143,11 +123,6 @@ const fadeUpTargets = [
   "hero-content",
   "mission-head",
   "mission-quote",
-  "nourish-head",
-  "nourish-grid",
-  "nourish-detail-1",
-  "nourish-detail-2",
-  "nourish-detail-3",
   "partners-head",
   "partner-1",
   "partner-2",
@@ -338,47 +313,6 @@ function App() {
             <div className="hebrew">עולם חסד יבנה</div>
             <p>“The beauty of giving is found not in what we give, but in the lives we touch.”</p>
           </div>
-        </div>
-      </section>
-
-      <section className="nourish" id="nourish">
-        <div className={`section-head center ${fadeClassName("nourish-head")}`} data-fade-id="nourish-head">
-          <div className="eyebrow">Protein &amp; Nutrition</div>
-          <h2>Lihasbia Chicken Project</h2>
-          <p>
-            Nourishing kollel families with protein-rich meals. Two chickens per child monthly ensures proper
-            nutrition for children who would otherwise eat pareve all week.
-          </p>
-        </div>
-
-        <div className={`nourish-stats ${fadeClassName("nourish-grid")}`} data-fade-id="nourish-grid">
-          {nourishStats.map((stat) => (
-            <article key={stat.id} className="nourish-stat">
-              <strong>
-                <AnimatedCounter
-                  value={stat.value}
-                  prefix={stat.prefix}
-                  suffix={stat.suffix}
-                  start={visibleIds.has("nourish-grid")}
-                  duration={2400}
-                />
-              </strong>
-              <span>{stat.label}</span>
-            </article>
-          ))}
-        </div>
-
-        <div className="nourish-details">
-          {leverageStats.map((item, index) => (
-            <article
-              key={item.title}
-              className={`nourish-detail ${fadeClassName(`nourish-detail-${index + 1}` as (typeof fadeUpTargets)[number])}`}
-              data-fade-id={`nourish-detail-${index + 1}`}
-            >
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </article>
-          ))}
         </div>
       </section>
 
@@ -574,61 +508,6 @@ function App() {
         </div>
       </footer>
     </div>
-  );
-}
-
-function AnimatedCounter({
-  value,
-  prefix = "",
-  suffix = "",
-  start,
-  duration = 2200,
-}: {
-  value: number;
-  prefix?: string;
-  suffix?: string;
-  start: boolean;
-  duration?: number;
-}) {
-  const [displayValue, setDisplayValue] = useState(0);
-  const hasStartedRef = useRef(false);
-
-  useEffect(() => {
-    if (!start || hasStartedRef.current) {
-      return;
-    }
-
-    hasStartedRef.current = true;
-    let frameId = 0;
-    let lastRendered = -1;
-    const startTime = performance.now();
-
-    const tick = (now: number) => {
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 0.5 - Math.cos(progress * Math.PI) / 2;
-      const nextValue = Math.floor(value * eased);
-
-      if (nextValue !== lastRendered) {
-        lastRendered = nextValue;
-        setDisplayValue(nextValue);
-      }
-
-      if (progress < 1) {
-        frameId = requestAnimationFrame(tick);
-      }
-    };
-
-    frameId = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(frameId);
-  }, [duration, start, value]);
-
-  return (
-    <>
-      {prefix}
-      {displayValue.toLocaleString()}
-      {suffix}
-    </>
   );
 }
 
