@@ -1,5 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { sendMessage } from "./emailService";
 import { SiteFooter, SiteHeader } from "./SiteChrome";
+import { TurnstileWidget } from "./TurnstileWidget";
 
 const partnerOrganizations = [
   {
@@ -94,6 +96,21 @@ const fadeUpTargets = [
 
 function App() {
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set(["hero-content"]));
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+    optIn: "no" as "yes" | "no",
+  });
+  const [submitState, setSubmitState] = useState<{
+    status: "idle" | "submitting" | "success" | "error";
+    message: string;
+  }>({
+    status: "idle",
+    message: "",
+  });
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -118,9 +135,65 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const scrollToHashTarget = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) {
+        return;
+      }
+
+      window.requestAnimationFrame(() => {
+        const element = document.getElementById(hash);
+        if (!element) {
+          return;
+        }
+
+        const top = element.getBoundingClientRect().top + window.scrollY - 110;
+        window.scrollTo({ top, behavior: "smooth" });
+      });
+    };
+
+    scrollToHashTarget();
+    window.addEventListener("hashchange", scrollToHashTarget);
+
+    return () => window.removeEventListener("hashchange", scrollToHashTarget);
+  }, []);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.alert("Placeholder form — connect this to your backend or form service.");
+
+    if (!turnstileToken) {
+      setSubmitState({
+        status: "error",
+        message: "Please complete the captcha before sending your message.",
+      });
+      return;
+    }
+
+    setSubmitState({ status: "submitting", message: "" });
+
+    const result = await sendMessage(contactForm);
+
+    if (!result.ok) {
+      setSubmitState({
+        status: "error",
+        message: result.error,
+      });
+      return;
+    }
+
+    setSubmitState({
+      status: "success",
+      message: "Your message was sent successfully. We will get back to you soon.",
+    });
+    setContactForm({
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+      optIn: "no",
+    });
+    setTurnstileToken("");
   };
 
   const fadeClassName = (id: (typeof fadeUpTargets)[number]) =>
@@ -191,11 +264,12 @@ function App() {
           <div className={`quote-card ${fadeClassName("mission-quote")}`} data-fade-id="mission-quote">
             <div className="hebrew">עולם חסד יבנה</div>
             <div className="hebrew-translation">Building our world through kindness</div>
-            <img
-              src="/kindness-world.svg"
-              alt="Illustration of a world being built through acts of kindness"
+            {/* <img
+              src="/hero-radiant-family.png"
+              alt="Acts of kindness strengthening the world"
               className="mission-art"
-            />
+            /> */}
+            <p>“The beauty of giving is found not in what we give, but in the lives we touch.”</p>
           </div>
         </div>
       </section>
@@ -251,15 +325,15 @@ function App() {
 
           <div className="gift-grid">
             <div className="gift-card">
-              <AnimatedMetric value="$3600" className="gift-metric" />
+               <strong>$3600</strong>
               <span>Feeds 100 families for one week with essential groceries.</span>
             </div>
             <div className="gift-card">
-              <AnimatedMetric value="$18000" className="gift-metric" />
+              <strong>$18,000</strong>
               <span>Provides clothing for an entire neighborhood.</span>
             </div>
             <div className="gift-card">
-              <AnimatedMetric value="$36000" className="gift-metric" />
+              <strong>$36,000</strong>
               <span>Sponsors 10 weddings for struggling families.</span>
             </div>
           </div>
@@ -269,8 +343,11 @@ function App() {
               Donate
             </a>
           </div>
-          <p className="donate-footnote">Tiferes Yaakov is a registered 501(c)(3) organization. EIN: 83-4411630.</p>
-          <p>All donations are tax-deductible.</p>
+          <p className="donate-footnote">
+            Congregation Tiferes Yaakov is a registered 501(c)(3) organization. 
+            <br/> EIN: 83-4411630. 
+            <br/> All donations are tax-deductible.
+          </p>
         </div>
       </section>
 
@@ -278,7 +355,7 @@ function App() {
         <div className="contact-grid">
           <div className={fadeClassName("contact-head")} data-fade-id="contact-head">
             <div className="section-head">
-              <div className="eyebrow">Get In Touch</div>
+              <div className="eyebrow" id="#contact">Get In Touch</div>
               <h2>Questions? We’re Here to Help</h2>
               <p>
                 Whether you have questions about our work, want to learn more about our partner organizations, or are
@@ -299,15 +376,46 @@ function App() {
             </div>
           </div>
 
-          <div className={`contact-card ${fadeClassName("contact-form")}`} data-fade-id="contact-form">
+          <div
+            className={`contact-card ${fadeClassName("contact-form")}`}
+            data-fade-id="contact-form"
+            id="contact-form"
+          >
             <h3>Send a Message</h3>
             <form onSubmit={handleSubmit}>
-              <input type="text" placeholder="Your Name" />
-              <input type="email" placeholder="Email Address" />
-              <textarea placeholder="How can we help you?" />
-              <button className="btn filled" type="submit">
-                Send Message
+              <input
+                type="text"
+                placeholder="Your Name"
+                value={contactForm.name}
+                onChange={(event) => setContactForm((current) => ({ ...current, name: event.target.value }))}
+                required
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={contactForm.email}
+                onChange={(event) => setContactForm((current) => ({ ...current, email: event.target.value }))}
+                required
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                value={contactForm.phone}
+                onChange={(event) => setContactForm((current) => ({ ...current, phone: event.target.value }))}
+              />
+              <textarea
+                placeholder="How can we help you?"
+                value={contactForm.message}
+                onChange={(event) => setContactForm((current) => ({ ...current, message: event.target.value }))}
+                required
+              />
+              <TurnstileWidget onTokenChange={setTurnstileToken} />
+              <button className="btn filled" type="submit" disabled={submitState.status === "submitting"}>
+                {submitState.status === "submitting" ? "Sending..." : "Send Message"}
               </button>
+              {submitState.status !== "idle" ? (
+                <p className={`form-status ${submitState.status}`}>{submitState.message}</p>
+              ) : null}
             </form>
           </div>
         </div>

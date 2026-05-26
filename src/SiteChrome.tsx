@@ -88,6 +88,8 @@ export function SiteFooter() {
           />
           <div className="eyebrow">Congregation Tiferes Yaakov</div>
           <p>Supporting families through charitable assistance, partnership, and Jewish education.</p>
+          <p>6 Shoshana Drive</p>
+          <p>Lakewood, NJ 08701</p>
         </div>
         <div>
           <h4>Quick Links</h4>

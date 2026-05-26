@@ -26,6 +26,13 @@ function DonatePage() {
               <li>Mail a check</li>
               <li>Donor-advised funds</li>
             </ul>
+            <p>
+              If none of these options works for you, please{" "}
+              <a href="/#contact-form" className="inline-link">
+                reach out to us
+              </a>{" "}
+              and we will help arrange another way to give.
+            </p>
           </section>
 
           <section className="donate-panel">

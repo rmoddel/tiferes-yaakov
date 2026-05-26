@@ -39,7 +39,8 @@ a {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -330,6 +331,7 @@ section {
 
 .hebrew-translation {
   margin-bottom: 22px;
+  text-align: right;
 }
 
 .mission-art {
@@ -729,7 +731,8 @@ form {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   border: 1px solid rgba(201, 162, 74, 0.16);
   background: rgba(255, 255, 255, 0.045);
@@ -747,6 +750,39 @@ textarea {
 input::placeholder,
 textarea::placeholder {
   color: rgba(245, 237, 220, 0.38);
+}
+
+select {
+  appearance: none;
+}
+
+.contact-opt-in {
+  display: grid;
+  gap: 9px;
+}
+
+.contact-opt-in span {
+  color: rgba(245, 237, 220, 0.72);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.form-status {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.form-status.success {
+  color: #b9e7bc;
+}
+
+.form-status.error {
+  color: #ffb4a8;
+}
+
+.turnstile-widget {
+  min-height: 65px;
 }
 
 footer {
@@ -785,6 +821,17 @@ footer {
   color: rgba(245, 237, 220, 0.62);
   line-height: 1.8;
   margin-bottom: 8px;
+}
+
+.inline-link {
+  color: var(--gold-soft);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.inline-link:hover {
+  color: var(--cream);
 }
 
 .footer-bottom {
