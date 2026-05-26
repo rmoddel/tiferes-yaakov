@@ -1,18 +1,18 @@
-import { FormEvent, SyntheticEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { SiteFooter, SiteHeader } from "./SiteChrome";
 
-const donationAmounts = ["$36", "$72", "$180", "$360", "$500", "$1000"];
-const logoSrc = "/congregation-tiferes-yaakov-logo.svg";
-const fallbackLogoSrc = "/logo-mark.svg";
 const partnerOrganizations = [
   {
     fadeId: "partner-1",
-    category: "Food Essentials",
-    badge: "$1 = $6 of food essentials",
+    category: "Yom Tov Essentials",
+    badge: "",
     name: "Aniyei Kiryat Sefer",
-    lead: "Led by Yoely Zupnik",
+    lead: "",
     description:
-      "Providing food essentials to families in Kiryat Sefer, the highest concentration of Torah scholars in Eretz Yisroel. Every dollar is multiplied 6x through strategic partnerships and bulk purchasing.",
+      "Providing food essentials to families in Kiryat Sefer for Yom Tov, the highest concentration of Torah scholars in Eretz Yisroel. Every dollar is multiplied 6x through strategic partnerships and bulk purchasing.",
     stats: [
+      { value: "56,000+", label: "People Supported" },
+      { value: "$14M", label: "Annual Budget" },
       { value: "6,000+", label: "Families Served" },
       { value: "6x", label: "Your Impact" },
     ],
@@ -20,9 +20,9 @@ const partnerOrganizations = [
   {
     fadeId: "partner-2",
     category: "Protein & Nutrition",
-    badge: "$1 = $2.40 of food value",
+    badge: "",
     name: "Lihasbia Chicken Project",
-    lead: "Led by Sruly Katz",
+    lead: "",
     description:
       "Nourishing kollel families with protein-rich meals. Two chickens per child monthly ensures proper nutrition for children who would otherwise eat pareve all week.",
     stats: [
@@ -35,16 +35,16 @@ const partnerOrganizations = [
   {
     fadeId: "partner-3",
     category: "Clothing & Dignity",
-    badge: "$5M creates $40M of value",
+    badge: "",
     name: "Malbushei Kavod",
-    lead: "Dressed with Dignity • Led by Moshe Bodner",
+    lead: "Dressed with Dignity",
     description:
-      "Ensuring every family is dressed in beautiful clothing for Yom Tov. Through strategic purchasing, $5M in donations creates $40M of value for Klal Yisroel.",
+      "Ensuring every family is dressed in beautiful clothing for Yom Tov. Through strategic purchasing, $15M in donations creates $40M of value for Klal Yisroel.",
     stats: [
       { value: "31,000+", label: "Families Served" },
       { value: "160,000+", label: "Children Clothed" },
       { value: "900,000+", label: "Clothing Items" },
-      { value: "1,100+", label: "Neighborhoods" },
+      { value: "1,100+", label: "Neighborhoods Across Israel" },
     ],
   },
   {
@@ -52,12 +52,14 @@ const partnerOrganizations = [
     category: "Torah Support",
     badge: "",
     name: "Keren Olam HaTorah",
-    lead: "Led by Community Leadership",
+    lead: "",
     description:
       "Supporting Torah scholars and their families throughout Eretz Yisroel, ensuring that those dedicated to learning can continue their sacred work without financial burden.",
     stats: [
-      { value: "5,000+", label: "Families Supported" },
-      { value: "100%", label: "To Torah Families" },
+      { value: "120,000+", label: "Torah Scholars" },
+      { value: "233", label: "Cities Across Israel" },
+      { value: "1500+", label: "Torah Institutions" },
+      { value: "1M nis", label: "Avg. Daily Distribution" },
     ],
   },
   {
@@ -65,57 +67,13 @@ const partnerOrganizations = [
     category: "Basic Needs",
     badge: "",
     name: "Kupas Bet Shemesh",
-    lead: "Led by Nachum Cheshin",
+    lead: "",
     description:
       "Providing weekly assistance to hundreds of impoverished families in Bet Shemesh with basic necessities, food, utilities, medical expenses, and emergency support when needed most.",
     stats: [
-      { value: "500+", label: "Families Weekly" },
+      { value: "1300+", label: "Families Weekly" },
       { value: "$10M+", label: "Yearly Aid" },
     ],
-  },
-] as const;
-const impactStats = [
-  {
-    fadeId: "impact-1",
-    title: "Food Essentials",
-    description: "Aniyei Kiryat Sefer multiplies every donated dollar into large-scale essentials through bulk purchasing.",
-    value: "6,000+",
-    label: "Families Served",
-  },
-  {
-    fadeId: "impact-2",
-    title: "Food Multiplication",
-    description: "Strategic partnerships turn basic giving into materially larger food support on the ground.",
-    value: "6x",
-    label: "Your Impact",
-  },
-  {
-    fadeId: "impact-3",
-    title: "Protein & Nutrition",
-    description: "The chicken project supports kollel homes with real nourishment rather than a week of pareve meals.",
-    value: "27,000+",
-    label: "People Fed",
-  },
-  {
-    fadeId: "impact-4",
-    title: "Clothing & Dignity",
-    description: "Malbushei Kavod equips families for Yom Tov with dignified, beautiful clothing at scale.",
-    value: "160,000+",
-    label: "Children Clothed",
-  },
-  {
-    fadeId: "impact-5",
-    title: "Torah Support",
-    description: "Keren Olam HaTorah keeps Torah families supported so learning can continue without crushing strain.",
-    value: "5,000+",
-    label: "Families Supported",
-  },
-  {
-    fadeId: "impact-6",
-    title: "Basic Needs",
-    description: "Kupas Bet Shemesh provides weekly relief and year-round emergency aid where the need is immediate.",
-    value: "$10M+",
-    label: "Yearly Aid",
   },
 ] as const;
 
@@ -129,33 +87,13 @@ const fadeUpTargets = [
   "partner-3",
   "partner-4",
   "partner-5",
-  "impact-head",
-  "impact-1",
-  "impact-2",
-  "impact-3",
-  "impact-4",
-  "impact-5",
-  "impact-6",
   "donate-box",
   "contact-head",
   "contact-form",
 ] as const;
 
 function App() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeDonation, setActiveDonation] = useState("$180");
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set(["hero-content"]));
-
-  useEffect(() => {
-    const onScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -180,8 +118,6 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
-  const closeMenu = () => setIsMenuOpen(false);
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     window.alert("Placeholder form — connect this to your backend or form service.");
@@ -190,72 +126,22 @@ function App() {
   const fadeClassName = (id: (typeof fadeUpTargets)[number]) =>
     visibleIds.has(id) ? "fade-up visible" : "fade-up";
 
-  const handleLogoError = (event: SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.onerror = null;
-    event.currentTarget.src = fallbackLogoSrc;
-  };
-
   return (
     <div className="page">
-      <nav className={`nav${isScrolled ? " scrolled" : ""}`} id="nav">
-        <a href="#" className="brand" onClick={closeMenu}>
-          <div className="brand-mark">
-            <img
-              src={logoSrc}
-              alt="Congregation Tiferes Yaakov Logo"
-              onError={handleLogoError}
-              style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "50%", padding: 4 }}
-            />
-          </div>
-          <div>
-            <strong>Congregation Tiferes Yaakov</strong>
-            <span>Torah • Tzedakah • Chessed</span>
-          </div>
-        </a>
-
-        <button
-          className="mobile-menu"
-          id="menuBtn"
-          type="button"
-          aria-expanded={isMenuOpen}
-          aria-controls="navLinks"
-          onClick={() => setIsMenuOpen((current) => !current)}
-        >
-          Menu
-        </button>
-
-        <div className={`nav-links${isMenuOpen ? " open" : ""}`} id="navLinks">
-          <a href="#mission" onClick={closeMenu}>
-            Mission
-          </a>
-          <a href="#partners" onClick={closeMenu}>
-            Partners
-          </a>
-          <a href="#impact" onClick={closeMenu}>
-            Impact
-          </a>
-          <a href="#contact" onClick={closeMenu}>
-            Contact
-          </a>
-          <a href="/donate" className="btn filled" onClick={closeMenu}>
-            Donate Now
-          </a>
-        </div>
-      </nav>
+      <SiteHeader
+        sectionLinks={[
+          { href: "#mission", label: "Mission" },
+          { href: "#partners", label: "Partners" },
+          { href: "#contact", label: "Contact" },
+        ]}
+      />
 
       <header className="hero">
         <div className={fadeClassName("hero-content")} data-fade-id="hero-content">
-          <img
-            src={logoSrc}
-            alt="Congregation Tiferes Yaakov Logo"
-            className="hero-logo"
-            onError={handleLogoError}
-          />
-          <div className="eyebrow">Congregation Tiferes Yaakov</div>
           <h1>Bringing Light to Those in Need.</h1>
           <p className="hero-text">
-            Partnering with established charitable organizations to channel your generosity where it matters most
-            — directly to families facing hardship.
+            Congregation Tiferes Yaakov is a community-driven Orthodox Jewish congregation and charitable
+            organization helping families in need, strengthening charitable impact, and furthering Jewish education.
           </p>
           <div className="hero-actions">
             <a href="/donate" className="btn filled">
@@ -274,55 +160,53 @@ function App() {
           <div className={fadeClassName("mission-head")} data-fade-id="mission-head">
             <div className="section-head">
               <div className="eyebrow">Our Mission</div>
-              <h2>A Bridge Between Generosity and Need</h2>
+              <h2>Who We Are</h2>
               <p>
-                Tiferes Yaakov was founded with a singular purpose: to serve as a trusted conduit between generous
-                donors and families in desperate need. We work hand-in-hand with established charitable organizations,
-                each with deep community roots and proven track records.
+                Congregation Tiferes Yaakov is a community-driven Orthodox Jewish congregation and charitable
+                organization dedicated to helping families in times of need, furthering Jewish education, and
+                strengthening meaningful philanthropic impact.
               </p>
               <br />
               <p>
-                Every dollar contributed flows directly to vetted programs that provide food, clothing, medical
-                assistance, and dignity to those who need it most. Our partnerships ensure that generosity creates
-                real, lasting impact.
+                Through direct assistance and strategic partnerships, we support families facing financial hardship,
+                medical needs, food insecurity, and major life expenses, while helping expand access to essential
+                educational and community support.
               </p>
               <br />
-              <p>
-                We believe in transparency, accountability, and the profound Jewish value of tzedakah — righteous
-                giving that uplifts both the giver and the receiver.
-              </p>
+              <ul>
+                <li>Helping families with wedding expenses, medical needs, daily living support, food, and holiday assistance</li>
+                <li>Supporting initiatives that provide nutrition and essential help to more than 27,000 children</li>
+                <li>Partnering with trusted organizations and community leaders to extend the reach of charitable giving</li>
+              </ul>
             </div>
 
             <div className="stats-mini">
               <div className="mini-stat">
-                <strong>4+</strong>
-                <span>Partner Organizations</span>
-              </div>
-              <div className="mini-stat">
-                <strong>1000+</strong>
+                <AnimatedMetric value="25,000+" />
                 <span>Families Helped</span>
-              </div>
-              <div className="mini-stat">
-                <strong>100%</strong>
-                <span>Transparency</span>
               </div>
             </div>
           </div>
 
           <div className={`quote-card ${fadeClassName("mission-quote")}`} data-fade-id="mission-quote">
             <div className="hebrew">עולם חסד יבנה</div>
-            <p>“The beauty of giving is found not in what we give, but in the lives we touch.”</p>
+            <div className="hebrew-translation">Building our world through kindness</div>
+            <img
+              src="/kindness-world.svg"
+              alt="Illustration of a world being built through acts of kindness"
+              className="mission-art"
+            />
           </div>
         </div>
       </section>
 
       <section className="partners" id="partners">
         <div className={`section-head ${fadeClassName("partners-head")}`} data-fade-id="partners-head">
-          <div className="eyebrow">Our Partners</div>
+          <div className="eyebrow">Featured Partners</div>
           <h2>Trusted Organizations, Proven Impact</h2>
           <p>
-            We partner exclusively with organizations that share our commitment to transparency, efficiency, and
-            compassionate service.
+            We partner with organizations that share our commitment to transparency, efficiency, and compassionate
+            service.
           </p>
         </div>
 
@@ -343,7 +227,7 @@ function App() {
               <div className={`partner-stats partner-stats-${partner.stats.length}`}>
                 {partner.stats.map((stat) => (
                   <div key={`${partner.fadeId}-${stat.label}`} className="partner-stat-box">
-                    <strong>{stat.value}</strong>
+                    <AnimatedMetric value={stat.value} />
                     <span>{stat.label}</span>
                   </div>
                 ))}
@@ -356,84 +240,37 @@ function App() {
         </div>
       </section>
 
-      <section className="impact" id="impact">
-        <div
-          className={`section-head center ${fadeClassName("impact-head")}`}
-          data-fade-id="impact-head"
-        >
-          <div className="eyebrow">Our Impact</div>
-          <h2>Every Contribution Creates Change</h2>
-          <p>Your donations are transformed into measurable support for Torah families across Eretz Yisroel.</p>
-        </div>
-
-        <div className="impact-grid">
-          {impactStats.map((item) => (
-            <div key={item.fadeId} className={`impact-card ${fadeClassName(item.fadeId)}`} data-fade-id={item.fadeId}>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              <strong>{item.value}</strong>
-              <span>{item.label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <section className="donate" id="donate">
         <div className={`donate-box ${fadeClassName("donate-box")}`} data-fade-id="donate-box">
           <div className="eyebrow">Support Our Mission</div>
           <h2>Your Gift Changes Lives</h2>
           <p>
-            Every donation, regardless of size, goes directly toward helping families in need. Choose an amount that
-            is meaningful to you, or set up a recurring gift to provide ongoing support.
+            Every donation goes directly toward helping families in need. Support food, clothing, weddings, holiday
+            assistance, and educational programming through the congregation’s charitable work.
           </p>
 
           <div className="gift-grid">
             <div className="gift-card">
-              <strong>$36</strong>
-              <span>Feeds a family for one week with essential groceries.</span>
+              <AnimatedMetric value="$3600" className="gift-metric" />
+              <span>Feeds 100 families for one week with essential groceries.</span>
             </div>
             <div className="gift-card">
-              <strong>$180</strong>
-              <span>Provides clothing for an entire family including children.</span>
+              <AnimatedMetric value="$18000" className="gift-metric" />
+              <span>Provides clothing for an entire neighborhood.</span>
             </div>
             <div className="gift-card">
-              <strong>$360</strong>
-              <span>Covers utility bills for a struggling family for one month.</span>
+              <AnimatedMetric value="$36000" className="gift-metric" />
+              <span>Sponsors 10 weddings for struggling families.</span>
             </div>
           </div>
 
-          <div className="donate-note">
-            <span>Tax Deductible</span>
-            <span>Secure Payment</span>
-            <span>One-Time Gift</span>
-            <span>Monthly Supporter</span>
-          </div>
-
-          <div className="donation-options">
-            {donationAmounts.map((amount) => (
-              <button
-                key={amount}
-                type="button"
-                className={activeDonation === amount ? "active" : ""}
-                onClick={() => setActiveDonation(amount)}
-              >
-                {amount}
-              </button>
-            ))}
-          </div>
-
-          <p>Your one-time gift</p>
           <div className="donate-actions">
             <a href="/donate" className="btn filled">
-              Donate with Card
-            </a>
-            <a href="/donate" className="btn secondary-action">
-              PayPal Giving
+              Donate
             </a>
           </div>
-          <p className="donate-footnote">
-            Tiferes Yaakov is a registered 501(c)(3) organization. All donations are tax-deductible.
-          </p>
+          <p className="donate-footnote">Tiferes Yaakov is a registered 501(c)(3) organization. EIN: 83-4411630.</p>
+          <p>All donations are tax-deductible.</p>
         </div>
       </section>
 
@@ -445,7 +282,7 @@ function App() {
               <h2>Questions? We’re Here to Help</h2>
               <p>
                 Whether you have questions about our work, want to learn more about our partner organizations, or are
-                interested in becoming a regular supporter — we would love to hear from you.
+                interested in supporting the congregation, we would love to hear from you.
               </p>
             </div>
 
@@ -453,10 +290,6 @@ function App() {
               <div className="contact-line">
                 <strong>Email</strong>
                 info@tiferesyaakov.org
-              </div>
-              <div className="contact-line">
-                <strong>Phone</strong>
-                (123) 456-7890
               </div>
               <div className="talmud-quote">
                 “Tzedakah is equal in importance to all the other commandments combined.”
@@ -480,35 +313,106 @@ function App() {
         </div>
       </section>
 
-      <footer>
-        <div className="footer-grid">
-          <div>
-            <h4>Congregation Tiferes Yaakov</h4>
-            <p>
-              Partnering with established charitable organizations to bring hope and dignity to families in need.
-            </p>
-          </div>
-          <div>
-            <h4>Quick Links</h4>
-            <a href="#mission">Our Mission</a>
-            <a href="#partners">Partners</a>
-            <a href="#impact">Impact</a>
-            <a href="/donate">Donate</a>
-          </div>
-          <div>
-            <h4>Support</h4>
-            <a href="/donate">Donate via Card</a>
-            <a href="/donate">PayPal Giving</a>
-            <a href="#contact">Contact Us</a>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <div>© {new Date().getFullYear()} Tiferes Yaakov. All rights reserved.</div>
-          <div>Made with care for those in need</div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
+}
+
+type AnimatedMetricProps = {
+  value: string;
+  className?: string;
+};
+
+function AnimatedMetric({ value, className }: AnimatedMetricProps) {
+  const [displayValue, setDisplayValue] = useState(() => formatAnimatedMetric(value, 0));
+  const elementRef = useRef<HTMLSpanElement | null>(null);
+
+  useEffect(() => {
+    const node = elementRef.current;
+    if (!node) {
+      return;
+    }
+
+    const target = parseAnimatedMetric(value);
+    const duration = 1400;
+    let frameId = 0;
+
+    const animate = () => {
+      const startTime = performance.now();
+
+      const tick = (now: number) => {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - (1 - progress) * (1 - progress);
+        setDisplayValue(formatAnimatedMetric(value, target * eased));
+
+        if (progress < 1) {
+          frameId = window.requestAnimationFrame(tick);
+        }
+      };
+
+      frameId = window.requestAnimationFrame(tick);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        window.cancelAnimationFrame(frameId);
+
+        if (entry.isIntersecting) {
+          setDisplayValue(formatAnimatedMetric(value, 0));
+          animate();
+        } else {
+          setDisplayValue(formatAnimatedMetric(value, 0));
+        }
+      },
+      { threshold: 0.55 },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [value]);
+
+  return (
+    <strong className={className} ref={elementRef}>
+      {displayValue}
+    </strong>
+  );
+}
+
+function parseAnimatedMetric(rawValue: string) {
+  if (rawValue.includes("M")) {
+    return Number(rawValue.replace(/[^\d.]/g, "")) * 1_000_000;
+  }
+
+  if (rawValue.includes("x")) {
+    return Number(rawValue.replace(/[^\d.]/g, ""));
+  }
+
+  return Number(rawValue.replace(/[^\d]/g, ""));
+}
+
+function formatAnimatedMetric(template: string, amount: number) {
+  const rounded = Math.round(amount);
+
+  if (template.includes("M")) {
+    const prefix = template.trim().startsWith("$") ? "$" : "";
+    const suffix = `${template.includes("+") ? "+" : ""}${template.includes("nis") ? " nis" : ""}`;
+    const millions = Math.max(0, Math.round((rounded / 1_000_000) * 10) / 10);
+    const compact = Number.isInteger(millions) ? millions.toFixed(0) : millions.toFixed(1);
+    return `${prefix}${compact}M${suffix}`;
+  }
+
+  if (template.includes("x")) {
+    const multiplier = Math.round(amount * 10) / 10;
+    return `${Number.isInteger(multiplier) ? multiplier.toFixed(0) : multiplier.toFixed(1)}x`;
+  }
+
+  const prefix = template.trim().startsWith("$") ? "$" : "";
+  const suffix = template.includes("+") ? "+" : "";
+  return `${prefix}${rounded.toLocaleString()}${suffix}`;
 }
 
 export default App;
