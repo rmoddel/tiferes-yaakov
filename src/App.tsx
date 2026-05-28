@@ -77,6 +77,21 @@ const partnerOrganizations = [
       { value: "$10M+", label: "Yearly Aid" },
     ],
   },
+  {
+    fadeId: "partner-6",
+    category: "Crisis Prevention",
+    badge: "",
+    name: "Tova U'Vracha",
+    lead: "",
+    description:
+      "Providing financial relief by serving overlooked families across Israel ensuring families don't have to give up one necessity to afford another.",
+    stats: [
+      { value: "41,428", label: "Families Served" },
+      { value: "$126M+", label: "Annual Budget" },
+      { value: "89", label: "Cities" },
+      { value: "5", label: "Programs" },
+    ],
+  },
 ] as const;
 
 const fadeUpTargets = [
@@ -213,8 +228,9 @@ function App() {
         <div className={fadeClassName("hero-content")} data-fade-id="hero-content">
           <h1>Bringing Light to Those in Need.</h1>
           <p className="hero-text">
-            Congregation Tiferes Yaakov is a community-driven Orthodox Jewish congregation and charitable
-            organization helping families in need, strengthening charitable impact, and furthering Jewish education.
+            Congregation Tiferes Yaakov is a community-driven Orthodox Jewish congregation dedicated 
+            to helping families in need, strengthening Torah and Jewish education, and supporting 
+            meaningful charitable initiatives through trusted partnerships and responsible stewardship.
           </p>
           <div className="hero-actions">
             <a href="/donate/" className="btn filled">
@@ -235,21 +251,23 @@ function App() {
               <div className="eyebrow">Our Mission</div>
               <h2>Who We Are</h2>
               <p>
-                Congregation Tiferes Yaakov is a community-driven Orthodox Jewish congregation and charitable
-                organization dedicated to helping families in times of need, furthering Jewish education, and
-                strengthening meaningful philanthropic impact.
-              </p>
-              <br />
-              <p>
-                Through direct assistance and strategic partnerships, we support families facing financial hardship,
-                medical needs, food insecurity, and major life expenses, while helping expand access to essential
-                educational and community support.
+                Congregation Tiferes Yaakov is an Orthodox Jewish congregation dedicated to strengthening Torah, 
+                supporting families in need, and advancing meaningful charitable initiatives through direct assistance 
+                to families in need and trusted partnerships.
+                <br />
+                <br />
+                Through our work with Rabbonim, community leaders, and established programs, we help provide food support, 
+                educational assistance, medical relief, emergency aid, and other essential services to families and communities worldwide.
+                <br />
+                <br />
+                Our congregation is committed to ensuring that charitable funds are distributed responsibly, compliantly, and with meaningful impact.
               </p>
               <br />
               <ul>
-                <li>Helping families with wedding expenses, medical needs, daily living support, food, and holiday assistance</li>
-                <li>Supporting initiatives that provide nutrition and essential help to more than 27,000 children</li>
-                <li>Partnering with trusted organizations and community leaders to extend the reach of charitable giving</li>
+                <li>Supporting families with daily living and Yom Tov needs</li>
+                <li>Assisting educational and nutrition initiatives benefiting thousands</li>
+                <li>Partnering with trusted organizations and community programs</li>
+                <li>Strengthening Torah and community support systems worldwide</li>
               </ul>
             </div>
 
