@@ -87,7 +87,7 @@ export function SiteFooter() {
             onError={handleLogoError}
           />
           <div className="eyebrow">Congregation Tiferes Yaakov</div>
-          <p>Supporting families through charitable assistance, partnership, and Jewish education.</p>
+          <p>Behind every home we touch is a heart like yours</p>
           <p>6 Shoshana Drive</p>
           <p>Lakewood, NJ 08701</p>
         </div>

@@ -87,9 +87,8 @@ const partnerOrganizations = [
       "Providing financial relief by serving overlooked families across Israel ensuring families don't have to give up one necessity to afford another.",
     stats: [
       { value: "41,428", label: "Families Served" },
-      { value: "$126M+", label: "Annual Budget" },
       { value: "89", label: "Cities" },
-      { value: "5", label: "Programs" },
+      
     ],
   },
 ] as const;
