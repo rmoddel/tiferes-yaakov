@@ -46,14 +46,6 @@ function DonatePage() {
                   <a href="https://thedonorsfund.org/donate/congregation-tiferes-yaakov/834411630" className="btn filled" target="_blank" rel="noreferrer">
                     via The Donors Fund
                   </a>
-                  <a
-                    href="https://www.paypal.com/us/fundraiser/charity/3817152"
-                    className="btn"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    via PayPal
-                  </a>
                 </div>
               </div>
 
