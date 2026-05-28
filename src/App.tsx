@@ -104,6 +104,7 @@ const fadeUpTargets = [
   "partner-3",
   "partner-4",
   "partner-5",
+  "partner-6",
   "donate-box",
   "contact-head",
   "contact-form",
