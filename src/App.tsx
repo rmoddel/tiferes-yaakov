@@ -26,7 +26,7 @@ const partnerOrganizations = [
     name: "Lihasbia Chicken Project",
     lead: "",
     description:
-      "Addressing food insecurity among kollel families with healthy, diverse, and nutrition-reach meal options. With a goal of two chickens per child monthly, your donation helps promote balanced nutrition for growing families who would otherwise remain food insecure.",
+      "Addressing food insecurity among kollel families with healthy, diverse, and nutrition-rich meal options. With a goal of two chickens per child monthly, your donation helps promote balanced nutrition for growing families who would otherwise remain food insecure.",
     stats: [
       { value: "3,300+", label: "Kollel Families" },
       { value: "27,000+", label: "People Fed" },
