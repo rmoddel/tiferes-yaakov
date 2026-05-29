@@ -1077,6 +1077,9 @@ footer {
   flex-wrap: wrap;
   gap: 12px;
 }
+.donate-action-list a{
+  flex-grow: 1
+}
 
 .donate-instruction-card {
   display: grid;

@@ -46,6 +46,9 @@ function DonatePage() {
                   <a href="https://thedonorsfund.org/donate/congregation-tiferes-yaakov/834411630" className="btn filled" target="_blank" rel="noreferrer">
                     via The Donors Fund
                   </a>
+                  <a href="https://donate.stripe.com/cN200h49J4kfccU9AA?locale=en&__embed_source=buy_btn_1QCE8tKdgeTwJrxU4rdIxJk2" className="btn filled" target="_blank" rel="noreferrer">
+                    via Stripe Payments
+                  </a>
                 </div>
               </div>
 
