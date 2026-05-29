@@ -11,7 +11,7 @@ const partnerOrganizations = [
     name: "Aniyei Kiryat Sefer",
     lead: "",
     description:
-      "Providing food essentials to families in Kiryat Sefer for Yom Tov, the highest concentration of Torah scholars in Eretz Yisroel. Every dollar is multiplied 6x through strategic partnerships and bulk purchasing.",
+      "Providing food support to families from the diverse communities of Kiryat Sefer, which has the highest concentration of Torah scholars in Eretz Yisroel. Every dollar is multiplied 6x through strategic partnerships and bulk purchasing. Your support goes toward alleviating food insecurity and enabling the celebration of Shabbosos and Yomim Tovim",
     stats: [
       { value: "56,000+", label: "People Supported" },
       { value: "$14M", label: "Annual Budget" },
@@ -26,7 +26,7 @@ const partnerOrganizations = [
     name: "Lihasbia Chicken Project",
     lead: "",
     description:
-      "Nourishing kollel families with protein-rich meals. Two chickens per child monthly ensures proper nutrition for children who would otherwise eat pareve all week.",
+      "Addressing food insecurity among kollel families with healthy, diverse, and nutrition-reach meal options. With a goal of two chickens per child monthly, your donation helps promote balanced nutrition for growing families who would otherwise remain food insecure.",
     stats: [
       { value: "3,300+", label: "Kollel Families" },
       { value: "27,000+", label: "People Fed" },
@@ -41,12 +41,12 @@ const partnerOrganizations = [
     name: "Malbushei Kavod",
     lead: "Dressed with Dignity",
     description:
-      "Ensuring every family is dressed in beautiful clothing for Yom Tov. Through strategic purchasing, $15M in donations creates $40M of value for Klal Yisroel.",
+      "Ensuring families are helped with obtaining dignified and culturally appropriate clothing throughout the year and during important holiday seasons. Through strategic purchasing, $15M in donations creates $40M of value for Klal Yisroel.",
     stats: [
       { value: "31,000+", label: "Families Served" },
       { value: "160,000+", label: "Children Clothed" },
       { value: "900,000+", label: "Clothing Items" },
-      { value: "1,100+", label: "Neighborhoods Across Israel" },
+      { value: "1,100+", label: "Neighborhoods Across Eretz Yisroel" },
     ],
   },
   {
@@ -56,10 +56,10 @@ const partnerOrganizations = [
     name: "Keren Olam HaTorah",
     lead: "",
     description:
-      "Supporting Torah scholars and their families throughout Eretz Yisroel, ensuring that those dedicated to learning can continue their sacred work without financial burden.",
+      "Supporting Torah scholars and their families throughout Eretz Yisroel, enabling those engaged in study can continue their sacred work without being a financial burden.",
     stats: [
       { value: "120,000+", label: "Torah Scholars" },
-      { value: "233", label: "Cities Across Israel" },
+      { value: "233", label: "Cities Across Eretz Yisroel" },
       { value: "1500+", label: "Torah Institutions" },
       { value: "1M nis", label: "Avg. Daily Distribution" },
     ],
@@ -71,7 +71,7 @@ const partnerOrganizations = [
     name: "Kupas Bet Shemesh",
     lead: "",
     description:
-      "Providing weekly assistance to hundreds of impoverished families in Bet Shemesh with basic necessities, food, utilities, medical expenses, and emergency support when needed most.",
+      "Providing weekly assistance to hundreds of impoverished families in Bet Shemesh with basic necessities, food support, utilities subsidies, medical expenses, and emergency support when needed most.",
     stats: [
       { value: "1300+", label: "Families Weekly" },
       { value: "$10M+", label: "Yearly Aid" },
@@ -84,7 +84,7 @@ const partnerOrganizations = [
     name: "Tova U'Vracha",
     lead: "",
     description:
-      "Providing financial relief by serving overlooked families across Israel ensuring families don't have to give up one necessity to afford another.",
+      "Providing financial relief by serving overlooked families across Eretz Yisroel ensuring families don't have to give up one necessity to afford another.",
     stats: [
       { value: "41,428", label: "Families Served" },
       { value: "89", label: "Cities" },
