@@ -109,26 +109,6 @@ const fadeUpTargets = [
   "contact-form",
 ] as const;
 
-function ParnasHayom() {
-  return (
-    <section className="parnas-hayom" aria-label="Parnas Hayom sponsor">
-      <div className="parnas-card">
-        <div>
-          <div className="eyebrow">Parnas Hayom</div>
-          <h2>
-            Sponsored by
-            <span>Pomerantz and Pomerantz, PLLC</span>
-          </h2>
-          <p>Attorney at Law</p>
-        </div>
-        <a href="tel:8455472600" className="parnas-phone">
-          845-547-2600
-        </a>
-      </div>
-    </section>
-  );
-}
-
 function App() {
   const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set(["hero-content"]));
   const [contactForm, setContactForm] = useState({
@@ -263,8 +243,6 @@ function App() {
         </div>
         <div className="scroll-note">Scroll</div>
       </header>
-
-      <ParnasHayom />
 
       <section className="mission" id="mission">
         <div className="mission-grid">
